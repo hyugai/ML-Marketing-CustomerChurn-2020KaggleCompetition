@@ -13,9 +13,8 @@ from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold, S
 from sklearn.metrics import fbeta_score, make_scorer, classification_report, confusion_matrix
 
 # preprocessing
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, TargetEncoder
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.preprocessing import StandardScaler, PowerTransformer, QuantileTransformer
-from category_encoders.cat_boost import CatBoostEncoder
 
 # impute
 from sklearn.impute import SimpleImputer, KNNImputer
