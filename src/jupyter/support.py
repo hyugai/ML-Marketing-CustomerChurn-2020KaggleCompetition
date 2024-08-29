@@ -236,11 +236,6 @@ class InitBinaryTree():
 # UDC: base customized transformer for sequatial feature selection task
 class FSBaseTransformer(BaseEstimator, TransformerMixin):
     ##
-    def __init__(self, tree: InitBinaryTree) -> None:
-        self.tree = tree
-
-        return None
-    ##
     def check_ndim(self, X: np.ndarray) -> tuple[np.ndarray, int | float]:
         ndim = X.ndim
         if ndim == 2:
@@ -262,9 +257,9 @@ class FSBaseTransformer(BaseEstimator, TransformerMixin):
 
         return X, idxes
     ##
-    def fit(self, X: np.ndarray, y=None):
+    def fit(self, X: np.ndarray, y: np.ndarray=None):
         self.ct = ColumnTransformer(self.assigned_transformers, remainder='passthrough')\
-            .fit(X)
+            .fit(X, y)
         
         return self
     ##
@@ -272,22 +267,7 @@ class FSBaseTransformer(BaseEstimator, TransformerMixin):
         X, _ = self.check_ndim(X)
 
         return self.ct.transform(X)
-
-#  class: SFS
-"""
-Child class of 'FSBaseTransformer'
-"""
-class SFSTransformer(FSBaseTransformer):
-    def fit(self, X: np.ndarray, y=None):
-        X, idxes = self.detect_category(X)
-
-        self.tree.left[0].data.update({'X': X, 'idxes': idxes['num']})
-        self.tree.right[0].data.update({'X': X, 'idxes': idxes['cat']})
-        self.assigned_transformers = self.tree.validate()
-
-        super().fit(X)
-
-        return self
+    
     
 # class: FSBaseClassifier
 class FSBaseClassifier(BaseEstimator, ClassifierMixin):
